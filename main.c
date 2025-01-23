@@ -5,14 +5,14 @@
 #include "list.h"
 
 int main() {
-    // Tworzenie listy o maksymalnym rozmiarze 5
+
     TList* list = createList(5);
     if (!list) {
         printf("Nie udało się utworzyć listy.\n");
         return 1;
     }
 
-    // Dodawanie elementów do listy
+
     char *items[] = {"A", "B", "C", "D", "E"};
     for (int i = 0; i < 5; i++) {
         char *item = strdup(items[i]);
@@ -25,7 +25,7 @@ int main() {
     }
     showList(list);
 
-    // Pobieranie elementów z listy
+
     for (int i = 0; i < 2; i++) {
         char *retrieved = (char*)getItem(list);
         if (retrieved) {
@@ -35,7 +35,6 @@ int main() {
     }
     showList(list);
 
-    // Usuwanie elementu z listy
     char toRemove[] = "D";
     Node *current = list->head;
     while (current) {
@@ -47,14 +46,12 @@ int main() {
     }
     showList(list);
 
-    // Sprawdzanie liczby elementów na liście
+
     printf("Aktualna liczba elementów: %d\n", getCount(list));
 
-    // Zmiana maksymalnego rozmiaru listy
     setMaxSize(list, 10);
     printf("Nowy maksymalny rozmiar listy ustawiony.\n");
 
-    // Tworzenie drugiej listy i dodawanie elementów
     TList* list2 = createList(5);
     if (!list2) {
         printf("Nie udało się utworzyć drugiej listy.\n");
@@ -71,12 +68,11 @@ int main() {
     printf("Lista 2 przed przeniesieniem:\n");
     showList(list2);
 
-    // Przenoszenie elementów z listy2 do listy
     appendItems(list, list2);
     printf("Lista po dodaniu elementów z listy2:\n");
     showList(list);
 
-    // Usuwanie listy
+  
     destroyList(list);
     destroyList(list2);
     printf("Listy zostały usunięte.\n");
