@@ -131,7 +131,7 @@ void appendItems(TList* list, TList* list2) {
         list2->head = list2->tail = NULL;
         list2->count = 0;
     }
-    pthread_cond_broadcast(&list->not_empty); // Powiadamianie wątków oczekujących
+    pthread_cond_broadcast(&list->not_empty); 
     pthread_mutex_unlock(&list2->lock);
     pthread_mutex_unlock(&list->lock);
 }
