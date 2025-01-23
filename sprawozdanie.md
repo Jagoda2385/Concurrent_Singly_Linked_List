@@ -106,17 +106,24 @@ Projekt dostępny w repozytorium pod adresem:
 **Kod testowy:**
 ```c
 #include <stdio.h>
-#include "Lista.h"
+#include <string.h>
+#include "list.h"
 
 int main() {
     TList *list = createList(3);
-    int a = 1, b = 2, c = 3;
-    putItem(list, &a);
-    putItem(list, &b);
-    putItem(list, &c);
+    char *str1 = strdup("Hello");
+    char *str2 = strdup("World");
+    char *str3 = strdup("!");
+    
+    putItem(list, str1);
+    putItem(list, str2);
+    putItem(list, str3);
     showList(list);
-    int *item = (int *)getItem(list);
-    printf("Usunięto: %d\n", *item);
+    
+    char *item = (char *)getItem(list);
+    printf("Usunięto: %s\n", item);
+    free(item);
+    
     destroyList(list);
     return 0;
 }
@@ -124,14 +131,14 @@ int main() {
 
 **Kompilacja i uruchomienie:**
 ```sh
-gcc main.c Lista.c -o program -lpthread
+gcc main.c list.c -o program -lpthread
 ./program
 ```
 
 **Oczekiwany wynik:**
 ```
-List contents: 1 2 3
-Usunięto: 1
+List contents: "Hello" "World" "!"
+Usunięto: Hello
 ```
 
 ---
