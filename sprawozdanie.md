@@ -124,6 +124,8 @@ int main() {
     printf("Usunięto: %s\n", item);
     free(item);
     
+    showList(list);
+    
     destroyList(list);
     return 0;
 }
@@ -139,6 +141,7 @@ gcc main.c list.c -o program -lpthread
 ```
 List contents: "Hello" "World" "!"
 Usunięto: Hello
+List contents: "World" "!"
 ```
 
 ---
