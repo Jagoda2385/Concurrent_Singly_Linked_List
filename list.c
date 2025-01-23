@@ -20,6 +20,7 @@ typedef struct {
 
 TList* createList(int size) {
     TList *list = (TList*)malloc(sizeof(TList));
+    if (!list) return NULL;
     list->head = list->tail = NULL;
     list->count = 0;
     list->maxSize = size;
@@ -34,9 +35,15 @@ void putItem(TList* list, void *el) {
     while (list->count >= list->maxSize) {
         pthread_cond_wait(&list->not_full, &list->lock);
     }
+    
     Node *newNode = (Node*)malloc(sizeof(Node));
+    if (!newNode) {
+        pthread_mutex_unlock(&list->lock);
+        return;
+    }
     newNode->data = el;
     newNode->next = NULL;
+    
     if (list->tail) {
         list->tail->next = newNode;
     } else {
@@ -44,6 +51,7 @@ void putItem(TList* list, void *el) {
     }
     list->tail = newNode;
     list->count++;
+    
     pthread_cond_signal(&list->not_empty);
     pthread_mutex_unlock(&list->lock);
 }
@@ -53,6 +61,7 @@ void* getItem(TList* list) {
     while (list->count == 0) {
         pthread_cond_wait(&list->not_empty, &list->lock);
     }
+    
     Node *oldNode = list->head;
     void *data = oldNode->data;
     list->head = oldNode->next;
@@ -61,6 +70,7 @@ void* getItem(TList* list) {
     }
     free(oldNode);
     list->count--;
+    
     pthread_cond_signal(&list->not_full);
     pthread_mutex_unlock(&list->lock);
     return data;
@@ -79,6 +89,7 @@ int removeItem(TList* list, void *el) {
             if (!current->next) {
                 list->tail = prev;
             }
+            free(current->data); 
             free(current);
             list->count--;
             pthread_cond_signal(&list->not_full);
@@ -120,6 +131,7 @@ void appendItems(TList* list, TList* list2) {
         list2->head = list2->tail = NULL;
         list2->count = 0;
     }
+    pthread_cond_broadcast(&list->not_empty); // Powiadamianie wątków oczekujących
     pthread_mutex_unlock(&list2->lock);
     pthread_mutex_unlock(&list->lock);
 }
@@ -129,6 +141,7 @@ void destroyList(TList* list) {
     Node *current = list->head;
     while (current) {
         Node *next = current->next;
+        free(current->data);
         free(current);
         current = next;
     }
@@ -138,14 +151,23 @@ void destroyList(TList* list) {
     free(list);
 }
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+
 void showList(TList* list) {
     pthread_mutex_lock(&list->lock);
     Node *current = list->head;
     printf("List contents: ");
     while (current) {
-        printf("%p ", current->data);
+        if (current->data) {
+            printf("\"%s\" ", (char*)current->data);
+        } else {
+            printf("NULL ");
+        }
         current = current->next;
     }
     printf("\n");
     pthread_mutex_unlock(&list->lock);
 }
+
