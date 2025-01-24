@@ -155,7 +155,7 @@ void destroyList(TList* list) {
 void showList(TList* list) {
     pthread_mutex_lock(&list->lock);
     Node *current = list->head;
-    printf("List contents: ");
+    printf("Zawartość listy: ");
     while (current) {
         if (current->data) {
             printf("\"%s\" ", (char*)current->data);
