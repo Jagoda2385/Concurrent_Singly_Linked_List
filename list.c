@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <stdbool.h>
+#include <ctype.h>
 
 typedef struct Node {
     void *data;
@@ -150,10 +151,6 @@ void destroyList(TList* list) {
     pthread_cond_destroy(&list->not_full);
     free(list);
 }
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
 
 void showList(TList* list) {
     pthread_mutex_lock(&list->lock);
