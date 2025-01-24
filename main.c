@@ -27,10 +27,10 @@ int main() {
 
 
     for (int i = 0; i < 2; i++) {
-        char *retrieved = (char*)getItem(list);
-        if (retrieved) {
-            printf("Pobrano: %s\n", retrieved);
-            free(retrieved);
+        char *string = (char*)getItem(list);
+        if (string) {
+            printf("Pobrano: %s\n", string);
+            free(string);
         }
     }
     showList(list);
