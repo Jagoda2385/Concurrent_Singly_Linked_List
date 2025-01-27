@@ -7,7 +7,7 @@ lang:     pl-PL
 ---
 
 Projekt jest dostępny w repozytorium pod adresem:  
-<>.
+<https://github.com/Jagoda2385/ProjektPSW>.
 
 # Struktury danych
 
