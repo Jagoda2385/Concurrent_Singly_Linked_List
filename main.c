@@ -26,7 +26,6 @@ int main() {
     
     showList(list);
 
- 
     for (int i = 0; i < 2; i++) {
         char *string = (char*)getItem(list);
         if (string) {
@@ -58,9 +57,10 @@ int main() {
 
     printf("Aktualna liczba elementów: %d\n", getCount(list));
 
-    
+
     setMaxSize(list, 10);
     printf("Nowy maksymalny rozmiar listy ustawiony.\n");
+
 
     TList* list2 = createList(5);
     if (!list2) {
@@ -68,7 +68,6 @@ int main() {
         destroyList(list);
         return 1;
     }
-
 
     char *itemX = strdup("X");
     char *itemY = strdup("Y");
@@ -86,21 +85,25 @@ int main() {
     printf("Lista 2 przed przeniesieniem:\n");
     showList(list2);
 
-
+   
     appendItems(list, list2);
     printf("Lista po dodaniu elementów z listy2:\n");
     showList(list);
-
 
     void *poppedItem = popItem(list);
     if (poppedItem) {
         printf("Usunięto ostatni element: %s\n", (char*)poppedItem);
         free(poppedItem);
     }
-
     showList(list);
 
-  
+    poppedItem = popItem(list);
+    if (poppedItem) {
+        printf("Usunięto ostatni element: %s\n", (char*)poppedItem);
+        free(poppedItem);
+    }
+    showList(list);
+
     destroyList(list);
     destroyList(list2);
     printf("Listy zostały usunięte.\n");
