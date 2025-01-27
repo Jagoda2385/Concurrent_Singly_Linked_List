@@ -1,5 +1,5 @@
-#ifndef LIST_H
-#define LIST_H
+#ifndef LCL_LIST_H
+#define LCL_LIST_H
 
 // ==============================================
 //
@@ -17,31 +17,36 @@ struct Node {
 typedef struct Node Node;
 
 typedef struct TList {
-    Node *head;
-    Node *tail;
-    int count;
+    Node *first_element;
+    Node *last_element;
+    int num_of_elements;
     int maxSize;
+    int destroy;
+    int active_threads;
     pthread_mutex_t lock;
     pthread_cond_t not_empty;
     pthread_cond_t not_full;
+    pthread_cond_t no_active_threads;
 } TList;
 
-TList *createList(int s);
+TList* createList(int s);
 
-void destroyList(TList *lst);
+void destroyList(TList* lst);
 
-void putItem(TList *lst, void *itm);
+void putItem(TList* lst, void* itm);
 
-void *getItem(TList *lst);
+void* getItem(TList* lst);
 
-int removeItem(TList *lst, void *itm);
+void* popItem(TList* lst);
 
-int getCount(TList *lst);
+int removeItem(TList* lst, void* itm);
 
-void setMaxSize(TList *lst, int s);
+int getCount(TList* lst);
 
-void appendItems(TList *lst, TList *lst2);
+void setMaxSize(TList* lst, int s);
 
-void showList(TList *lst);
+void appendItems(TList* lst, TList* lst2);
 
-#endif // LIST_H
+void showList(TList* lst);
+
+#endif //LCL_LIST_H
