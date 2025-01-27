@@ -254,11 +254,6 @@ void appendItems(TList* list, TList* list2) {
     }
 
     if (list2->first_element) {
-        if (list->num_of_elements + list2->num_of_elements > list->maxSize) {
-            pthread_mutex_unlock(&list2->lock);
-            pthread_mutex_unlock(&list->lock);
-            return;
-        }
 
         if (list->last_element) {
             list->last_element->next = list2->first_element;
@@ -273,13 +268,13 @@ void appendItems(TList* list, TList* list2) {
         list2->num_of_elements = 0;
 
         pthread_cond_broadcast(&list->not_empty);
-        
         pthread_cond_broadcast(&list2->not_full);
     }
 
     pthread_mutex_unlock(&list2->lock);
     pthread_mutex_unlock(&list->lock);
 }
+
 
 
 void showList(TList* list) {
