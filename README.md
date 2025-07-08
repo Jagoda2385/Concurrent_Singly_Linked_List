@@ -6,9 +6,6 @@ date:     v1.1, 2025-01-27
 lang:     pl-PL
 ---
 
-Projekt jest dostępny w repozytorium pod adresem:  
-<https://github.com/Jagoda2385/ProjektPSW>.
-
 # Struktury danych
 
 W implementacji zastosowano dynamiczną współbieżną listę jednokierunkową zarządzaną za pomocą mutexów oraz zmiennych warunkowych. Struktury danych użyte w implementacji to:
