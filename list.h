@@ -3,50 +3,69 @@
 
 // ==============================================
 //
-//  Version 1.0, 2025-01-15
+//  Concurrent Singly Linked List (Thread-Safe)
+//
+//  Version 1.0
+//  Date: 2025-01-15
+//
+//  Author: Jagoda2385
+//
+//  Description:
+//  This header defines the interface for a thread-safe
+//  singly linked list implementation using pthreads.
 //
 // ==============================================
 
 #include <pthread.h>
 
-struct Node {
-    void *data;
-    struct Node *next;
-};
+// Definition of a singly linked list node
+typedef struct Node {
+    void *data;           // Pointer to data
+    struct Node *next;    // Pointer to the next node
+} Node;
 
-typedef struct Node Node;
-
+// Definition of the concurrent singly linked list
 typedef struct TList {
-    Node *first_element;
-    Node *last_element;
-    int num_of_elements;
-    int maxSize;
-    int destroy;
-    int active_threads;
-    pthread_mutex_t lock;
-    pthread_cond_t not_empty;
-    pthread_cond_t not_full;
-    pthread_cond_t no_active_threads;
+    Node *first_element;  // Pointer to the first node
+    Node *last_element;   // Pointer to the last node
+    int num_of_elements;  // Current number of elements
+    int maxSize;          // Maximum allowed size
+    int destroy;          // Flag indicating if list is being destroyed
+    int active_threads;   // Number of active threads using the list
+    pthread_mutex_t lock; // Mutex for thread safety
+    pthread_cond_t not_empty;           // Condition variable for non-empty
+    pthread_cond_t not_full;            // Condition variable for non-full
+    pthread_cond_t no_active_threads;   // Condition variable for destruction
 } TList;
 
-TList* createList(int s);
+// Creates a new list with a given maximum size
+TList* createList(int size);
 
-void destroyList(TList* lst);
+// Frees all resources and destroys the list
+void destroyList(TList* list);
 
-void putItem(TList* lst, void* itm);
+// Adds a new item to the list (blocks if full)
+void putItem(TList* list, void* item);
 
-void* getItem(TList* lst);
+// Retrieves and removes the first item from the list (blocks if empty)
+void* getItem(TList* list);
 
-void* popItem(TList* lst);
+// Retrieves and removes the last item from the list (blocks if empty)
+void* popItem(TList* list);
 
-int removeItem(TList* lst, void* itm);
+// Removes a specific item from the list
+int removeItem(TList* list, void* item);
 
-int getCount(TList* lst);
+// Returns the current number of elements in the list
+int getCount(TList* list);
 
-void setMaxSize(TList* lst, int s);
+// Sets a new maximum size for the list
+void setMaxSize(TList* list, int size);
 
-void appendItems(TList* lst, TList* lst2);
+// Appends all items from list2 to list1
+void appendItems(TList* list, TList* list2);
 
-void showList(TList* lst);
+// Prints the contents of the list
+void showList(TList* list);
 
-#endif //LCL_LIST_H
+#endif // LCL_LIST_H
