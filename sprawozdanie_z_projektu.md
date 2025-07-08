@@ -1,7 +1,7 @@
 ---
 title:    Implementacja współbieżnej listy jednokierunkowej w języku C
 subtitle: Programowanie systemowe i współbieżne
-author:   Jagoda Wesołowska 159352 <jagoda.wesolowska@student.put.poznan.pl>
+author:   Jagoda Wesołowska| Jagoda2385
 date:     v1.1, 2025-01-27
 lang:     pl-PL
 ---
