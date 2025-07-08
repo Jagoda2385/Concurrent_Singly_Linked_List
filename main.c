@@ -5,38 +5,43 @@
 #include "lcl_list.h"
 
 int main() {
-
+    // Create a new list with initial max size of 5
     TList* list = createList(5);
     if (!list) {
-        printf("Nie udało się utworzyć listy.\n");
-        return 1;
+        printf("Failed to create the list.\n");
+        return EXIT_FAILURE;
     }
 
+    // Add initial items to the list
     char *items[] = {"A", "B", "C", "D", "E"};
     for (int i = 0; i < 5; i++) {
         char *item = strdup(items[i]);
         if (!item) {
-            printf("Błąd alokacji pamięci\n");
+            printf("Memory allocation error.\n");
             destroyList(list);
-            return 1;
+            return EXIT_FAILURE;
         }
         putItem(list, item);
-        printf("Dodano: %s\n", item);
+        printf("Added: %s\n", item);
     }
-    
+
+    printf("\nCurrent list contents:\n");
     showList(list);
 
+    // Get and remove two items from the list
     for (int i = 0; i < 2; i++) {
         char *string = (char*)getItem(list);
         if (string) {
-            printf("Pobrano: %s\n", string);
+            printf("Retrieved: %s\n", string);
             free(string);
         }
     }
+
+    printf("\nList after retrieving two items:\n");
     showList(list);
 
-
-    char toRemove[] = "D";
+    // Remove a specific item ("D") from the list
+    const char *toRemove = "D";
     Node *current = list->first_element;
     int removed = 0;
     while (current) {
@@ -48,65 +53,63 @@ int main() {
     }
 
     if (removed) {
-        printf("Element '%s' został usunięty.\n", toRemove);
+        printf("Element '%s' was removed.\n", toRemove);
     } else {
-        printf("Element '%s' nie znaleziony.\n", toRemove);
+        printf("Element '%s' not found.\n", toRemove);
     }
 
+    printf("\nList after removal:\n");
     showList(list);
+    printf("Current number of elements: %d\n", getCount(list));
 
-    printf("Aktualna liczba elementów: %d\n", getCount(list));
-
-
+    // Change max size
     setMaxSize(list, 10);
-    printf("Nowy maksymalny rozmiar listy ustawiony.\n");
+    printf("New max size set to 10.\n");
 
-
+    // Create a second list and add two items
     TList* list2 = createList(5);
     if (!list2) {
-        printf("Nie udało się utworzyć drugiej listy.\n");
+        printf("Failed to create the second list.\n");
         destroyList(list);
-        return 1;
+        return EXIT_FAILURE;
     }
 
     char *itemX = strdup("X");
     char *itemY = strdup("Y");
     if (!itemX || !itemY) {
-        printf("Błąd alokacji pamięci\n");
+        printf("Memory allocation error.\n");
         free(itemX);
         free(itemY);
         destroyList(list);
         destroyList(list2);
-        return 1;
+        return EXIT_FAILURE;
     }
     putItem(list2, itemX);
     putItem(list2, itemY);
 
-    printf("Lista 2 przed przeniesieniem:\n");
+    printf("\nSecond list before appending:\n");
     showList(list2);
 
-   
+    // Append items from list2 to list
     appendItems(list, list2);
-    printf("Lista po dodaniu elementów z listy2:\n");
+    printf("\nList after appending items from list2:\n");
     showList(list);
 
-    void *poppedItem = popItem(list);
-    if (poppedItem) {
-        printf("Usunięto ostatni element: %s\n", (char*)poppedItem);
-        free(poppedItem);
+    // Pop two items from the list
+    for (int i = 0; i < 2; i++) {
+        void *poppedItem = popItem(list);
+        if (poppedItem) {
+            printf("Popped last item: %s\n", (char*)poppedItem);
+            free(poppedItem);
+        }
+        printf("\nList after popping:\n");
+        showList(list);
     }
-    showList(list);
 
-    poppedItem = popItem(list);
-    if (poppedItem) {
-        printf("Usunięto ostatni element: %s\n", (char*)poppedItem);
-        free(poppedItem);
-    }
-    showList(list);
-
+    // Clean up memory
     destroyList(list);
     destroyList(list2);
-    printf("Listy zostały usunięte.\n");
+    printf("\nBoth lists have been deleted.\n");
 
-    return 0;
+    return EXIT_SUCCESS;
 }
